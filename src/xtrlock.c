@@ -114,7 +114,7 @@ get_prop_pixmap(char *aname)
     Atom rpa;
     Pixmap pix = None;
     Window rw = None;
-    
+
     DBG("atom: name %s, id %lu\n", aname, pa);
     if (pa == None)
         return None;
@@ -128,13 +128,13 @@ get_prop_pixmap(char *aname)
     DBG("nitems %lu, format %d, type %lu, pixmap type %lu\n", nitems, rf,
         rpa, XA_PIXMAP);
     if (nitems == 1 && rf == 32 && rpa == XA_PIXMAP) {
-        pix = *((Pixmap *) ret); 
+        pix = *((Pixmap *) ret);
     }
     XFree(ret);
     DBG("pix 0x%lx\n", pix);
     if (pix == None)
         return None;
-    
+
     rc = XGetGeometry(display, pix, &rw, &idummy, &idummy,
         &uidummy, &uidummy, &uidummy, &uidummy);
     DBG("XGetGeometry %d; rwin %lx\n", rc, rw);
@@ -154,7 +154,7 @@ get_bg_pixmap()
     if (pix != None)
         return pix;
     ERR("root['_XROOTPMAP_ID'] is not valid pixmap\n");
-    
+
     return None;
 }
 
@@ -167,7 +167,7 @@ create_window_full(int mode)
     unsigned long values = 0;
     Window window;
     Pixmap pix = None;
-    
+
     values = CWOverrideRedirect;
     attrib.override_redirect = True;
 
@@ -207,7 +207,7 @@ create_cursors(void)
     Pixmap csr_source,csr_mask;
     XColor dummy, def_bg, def_fg, bg, fg;
     int i;
-    
+
     csr_source = XCreateBitmapFromData(display, root, lock_bits,
         lock_width, lock_height);
     csr_mask = XCreateBitmapFromData(display, root, mask_bits, mask_width,
@@ -218,7 +218,7 @@ create_cursors(void)
         err("Can't allocate basic colors: black, white\n");
         exit(1);
     }
-     
+
     for (i = 0; i < AUTH_MAX; i++) {
         if (!XAllocNamedColor(display, cmap, cursors[i].fg, &dummy, &fg))
             fg = def_fg;
@@ -260,7 +260,7 @@ lock(int mode)
         err("can't grab keyboard\n");
         exit(1);
     }
-  
+
     for (;;) {
         if (rlen)
             state = AUTH_NOW;
@@ -290,8 +290,8 @@ lock(int mode)
                     rlen--;
                 break;
             case XK_Linefeed: case XK_Return:
-                if (rlen==0)
-                    break;
+                /* if (rlen==0) */
+                    /* break; */
                 rbuf[rlen]=0;
                 XGrabPointer(display, window, False,
                     0, GrabModeAsync, GrabModeAsync, None,
